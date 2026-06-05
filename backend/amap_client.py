@@ -1,5 +1,5 @@
 import requests
-from config import AMAP_KEY
+from backend.config import AMAP_KEY
 
 
 AMAP_BASE_URL = "https://restapi.amap.com/v5"
