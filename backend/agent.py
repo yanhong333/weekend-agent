@@ -1,9 +1,8 @@
 from typing import Any
 
 from backend.deepseek_client import parse_user_intent
+from backend.planner import generate_plans
 from backend.schemas import (
-    ActivityPlan,
-    ItineraryItem,
     PlaceCandidate,
     PlanRequest,
     PlanResponse,
@@ -21,11 +20,15 @@ def build_plan(request: PlanRequest) -> PlanResponse:
         request,
         parsed_intent,
     )
-    plans = _build_simple_plans(activity_candidates, restaurant_candidates, parsed_intent)
+    activity_candidates, restaurant_candidates, plans = generate_plans(
+        activity_candidates,
+        restaurant_candidates,
+        parsed_intent,
+    )
 
     return PlanResponse(
         status="success",
-        message="Plan generated with DeepSeek intent parsing and AMap place search.",
+        message="Plan generated with DeepSeek, AMap, and Planner scoring.",
         parsed_intent=parsed_intent,
         activity_candidates=activity_candidates,
         restaurant_candidates=restaurant_candidates,
@@ -212,51 +215,3 @@ def _mock_restaurant_candidates(parsed_intent: dict[str, Any]) -> list[PlaceCand
         ),
     ]
 
-
-def _build_simple_plans(
-    activity_candidates: list[PlaceCandidate],
-    restaurant_candidates: list[PlaceCandidate],
-    parsed_intent: dict[str, Any],
-) -> list[ActivityPlan]:
-    activity = activity_candidates[0]
-    restaurant = restaurant_candidates[0]
-    parse_source = parsed_intent.get("parse_source", "unknown")
-    map_source = parsed_intent.get("map_source", "unknown")
-
-    return [
-        ActivityPlan(
-            title="半日本地活动方案",
-            summary="先安排轻松活动，再就近用餐，保证路线短、节奏稳。",
-            estimated_cost="人均约 50-120 元",
-            estimated_duration="约 3-4 小时",
-            activity_place=activity,
-            restaurant=restaurant,
-            itinerary=[
-                ItineraryItem(
-                    time="14:00",
-                    title="从出发地前往活动地点",
-                    description=f"前往 {activity.name}，距离参考：{activity.distance}。",
-                ),
-                ItineraryItem(
-                    time="14:30",
-                    title="活动地点游玩",
-                    description="根据同行人和偏好控制节奏，优先选择轻松、可聊天、可拍照的活动。",
-                ),
-                ItineraryItem(
-                    time="16:30",
-                    title="前往附近餐厅",
-                    description=f"前往 {restaurant.name}，距离参考：{restaurant.distance}。",
-                ),
-                ItineraryItem(
-                    time="17:30",
-                    title="结束并返程",
-                    description="半日行程不要排太满，方便根据现场情况调整。",
-                ),
-            ],
-            tips=[
-                f"意图解析来源：{parse_source}",
-                f"地点搜索来源：{map_source}",
-                "下一阶段会加入 Planner 打分排序和更完整的路线判断。",
-            ],
-        )
-    ]

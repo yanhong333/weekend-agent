@@ -17,6 +17,7 @@ class PlaceCandidate(BaseModel):
     location: str | None = None
     rating: str | None = None
     source: str | None = None
+    score: float | None = None
 
 
 class ItineraryItem(BaseModel):
@@ -34,6 +35,7 @@ class ActivityPlan(BaseModel):
     restaurant: PlaceCandidate
     itinerary: list[ItineraryItem]
     tips: list[str]
+    score: float | None = None
 
 
 class PlanResponse(BaseModel):
