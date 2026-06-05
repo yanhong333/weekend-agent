@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WeekendPilot 本地活动规划 Agent</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="planner-shell">
+        <div class="intro">
+          <div>
+            <p class="eyebrow">WeekendPilot</p>
+            <h1>本地活动规划 Agent</h1>
+            <p class="intro-copy">
+              输入一句自然语言需求，系统会解析偏好、搜索真实地点，并生成可执行的半日活动方案。
+            </p>
+          </div>
+          <div class="service-status">
+            <span id="apiStatus">后端 8848</span>
+          </div>
+        </div>
+
+        <form id="planForm" class="plan-form">
+          <div class="field">
+            <label for="userInput">你的需求</label>
+            <textarea
+              id="userInput"
+              name="userInput"
+              rows="4"
+              placeholder="例如：今天下午想带老婆和5岁孩子出去玩，别太远，老婆最近在减肥"
+              required
+            ></textarea>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="startLocation">出发位置</label>
+              <input
+                id="startLocation"
+                name="startLocation"
+                type="text"
+                placeholder="例如：上海市徐汇区"
+                required
+              />
+            </div>
+
+            <div class="actions">
+              <button type="button" id="demoBtn" class="secondary-btn">填入示例</button>
+              <button type="submit" id="submitBtn">生成方案</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <section class="summary-strip" id="summaryStrip">
+        <div>
+          <span class="summary-label">意图解析</span>
+          <strong id="parseSource">等待输入</strong>
+        </div>
+        <div>
+          <span class="summary-label">地图搜索</span>
+          <strong id="mapSource">等待搜索</strong>
+        </div>
+        <div>
+          <span class="summary-label">推荐方案</span>
+          <strong id="planCount">0 个方案</strong>
+        </div>
+      </section>
+
+      <section class="result-layout">
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Agent Flow</p>
+              <h2>执行流程</h2>
+            </div>
+          </div>
+          <div id="flowResult" class="flow-grid">
+            <div class="flow-step pending">
+              <span>1</span>
+              <strong>理解需求</strong>
+              <p>等待调用 DeepSeek</p>
+            </div>
+            <div class="flow-step pending">
+              <span>2</span>
+              <strong>搜索地点</strong>
+              <p>等待调用高德地图</p>
+            </div>
+            <div class="flow-step pending">
+              <span>3</span>
+              <strong>规划排序</strong>
+              <p>等待 Planner 打分</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">DeepSeek</p>
+              <h2>意图解析</h2>
+            </div>
+          </div>
+          <div id="intentResult" class="empty-state">
+            提交后会展示时间、人数、预算、距离、饮食限制和关键词。
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">AMap</p>
+              <h2>候选地点</h2>
+            </div>
+          </div>
+          <div class="candidate-grid">
+            <div>
+              <h3>活动地点</h3>
+              <div id="activityList" class="list empty-state">暂无数据</div>
+            </div>
+            <div>
+              <h3>餐厅</h3>
+              <div id="restaurantList" class="list empty-state">暂无数据</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Planner</p>
+              <h2>推荐方案</h2>
+            </div>
+          </div>
+          <div id="plansResult" class="plans empty-state">暂无方案</div>
+        </section>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
