@@ -1,0 +1,38 @@
+<svg width="1200" height="420" viewBox="0 0 1200 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="420" rx="18" fill="#F7FBFA"/>
+  <path d="M0 88H1200" stroke="#E5ECEA" stroke-width="2"/>
+  <path d="M0 192H1200" stroke="#E5ECEA" stroke-width="2"/>
+  <path d="M0 314H1200" stroke="#E5ECEA" stroke-width="2"/>
+  <path d="M118 0V420" stroke="#E5ECEA" stroke-width="2"/>
+  <path d="M308 0V420" stroke="#E5ECEA" stroke-width="2"/>
+  <path d="M516 0V420" stroke="#E5ECEA" stroke-width="2"/>
+  <path d="M742 0V420" stroke="#E5ECEA" stroke-width="2"/>
+  <path d="M986 0V420" stroke="#E5ECEA" stroke-width="2"/>
+  <path d="M-40 360C146 280 248 312 388 220C536 122 654 134 780 86C910 36 1048 44 1240 10" stroke="#D7E2DF" stroke-width="20" stroke-linecap="round"/>
+  <path d="M-20 44C136 138 250 98 376 150C502 202 628 294 774 250C916 207 1014 236 1218 194" stroke="#DDE7E4" stroke-width="16" stroke-linecap="round"/>
+  <path d="M184 420C216 328 210 246 274 186C344 120 422 102 488 0" stroke="#DDE7E4" stroke-width="14" stroke-linecap="round"/>
+  <path d="M820 420C856 334 878 280 940 220C1010 152 1078 116 1128 0" stroke="#DDE7E4" stroke-width="14" stroke-linecap="round"/>
+  <path d="M72 250C156 214 226 234 284 262C356 297 418 318 490 288C564 258 610 206 688 192C786 176 856 222 936 188C1010 156 1062 116 1140 132" stroke="#0F9F8F" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M72 250C156 214 226 234 284 262C356 297 418 318 490 288C564 258 610 206 688 192C786 176 856 222 936 188C1010 156 1062 116 1140 132" stroke="#99F6E4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="48" y="42" width="168" height="92" rx="18" fill="#D9FBEF"/>
+  <rect x="612" y="292" width="238" height="82" rx="18" fill="#DBF7E8"/>
+  <rect x="904" y="52" width="188" height="86" rx="18" fill="#E8F8F3"/>
+  <circle cx="72" cy="250" r="22" fill="#0F9F8F" stroke="white" stroke-width="6"/>
+  <circle cx="284" cy="262" r="22" fill="#14B8A6" stroke="white" stroke-width="6"/>
+  <circle cx="688" cy="192" r="22" fill="#F97316" stroke="white" stroke-width="6"/>
+  <circle cx="936" cy="188" r="22" fill="#0EA5E9" stroke="white" stroke-width="6"/>
+  <circle cx="1140" cy="132" r="22" fill="#0F9F8F" stroke="white" stroke-width="6"/>
+  <g fill="white" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="middle" dominant-baseline="central">
+    <text x="72" y="250">1</text>
+    <text x="284" y="262">2</text>
+    <text x="688" y="192">3</text>
+    <text x="936" y="188">4</text>
+    <text x="1140" y="132">5</text>
+  </g>
+  <g opacity="0.8">
+    <circle cx="418" cy="80" r="6" fill="#0F9F8F"/>
+    <circle cx="538" cy="350" r="5" fill="#F97316"/>
+    <circle cx="1030" cy="296" r="5" fill="#0EA5E9"/>
+    <circle cx="172" cy="172" r="4" fill="#14B8A6"/>
+  </g>
+</svg>
