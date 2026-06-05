@@ -14,6 +14,9 @@ class PlaceCandidate(BaseModel):
     address: str
     distance: str
     reason: str
+    location: str | None = None
+    rating: str | None = None
+    source: str | None = None
 
 
 class ItineraryItem(BaseModel):

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.agent import build_mock_plan
+from backend.agent import build_plan
 from backend.schemas import PlanRequest, PlanResponse
 
 
@@ -36,4 +36,4 @@ def health_check() -> dict[str, str]:
 
 @app.post("/api/plan", response_model=PlanResponse)
 def create_plan(request: PlanRequest) -> PlanResponse:
-    return build_mock_plan(request)
+    return build_plan(request)
