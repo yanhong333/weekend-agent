@@ -68,6 +68,48 @@ def driving_route(origin: str, destination: str) -> dict[str, Any]:
     return _get_json(f"{AMAP_V3_BASE_URL}/direction/driving", params=params)
 
 
+def convert_gps_to_amap(longitude: float, latitude: float) -> str:
+    """Convert browser GPS coordinates to AMap coordinates."""
+    if not AMAP_KEY:
+        raise RuntimeError("AMAP_KEY is missing in .env")
+
+    params = {
+        "key": AMAP_KEY,
+        "locations": f"{longitude},{latitude}",
+        "coordsys": "gps",
+    }
+    data = _get_json(f"{AMAP_V3_BASE_URL}/assistant/coordinate/convert", params=params)
+    return data.get("locations") or f"{longitude},{latitude}"
+
+
+def reverse_geocode(location: str) -> dict[str, Any]:
+    if not AMAP_KEY:
+        raise RuntimeError("AMAP_KEY is missing in .env")
+
+    params = {
+        "key": AMAP_KEY,
+        "location": location,
+        "extensions": "base",
+        "radius": 1000,
+    }
+    data = _get_json(f"{AMAP_V3_BASE_URL}/geocode/regeo", params=params)
+    return data.get("regeocode", {})
+
+
+def get_weather(city: str) -> dict[str, Any]:
+    if not AMAP_KEY:
+        raise RuntimeError("AMAP_KEY is missing in .env")
+
+    params = {
+        "key": AMAP_KEY,
+        "city": city,
+        "extensions": "base",
+    }
+    data = _get_json(f"{AMAP_V3_BASE_URL}/weather/weatherInfo", params=params)
+    lives = data.get("lives", [])
+    return lives[0] if lives else {}
+
+
 def _get_json(url: str, params: dict[str, Any]) -> dict[str, Any]:
     response = requests.get(url, params=params, timeout=15)
     response.raise_for_status()

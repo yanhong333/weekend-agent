@@ -11,6 +11,8 @@ load_dotenv(ENV_PATH)
 
 
 AMAP_KEY = os.getenv("AMAP_KEY", "")
+AMAP_JS_KEY = os.getenv("AMAP_JS_KEY", "")
+AMAP_SECURITY_JS_CODE = os.getenv("AMAP_SECURITY_JS_CODE", "")
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
 
 

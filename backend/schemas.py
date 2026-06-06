@@ -45,3 +45,25 @@ class PlanResponse(BaseModel):
     activity_candidates: list[PlaceCandidate]
     restaurant_candidates: list[PlaceCandidate]
     plans: list[ActivityPlan]
+
+
+class LocationResolveRequest(BaseModel):
+    latitude: float = Field(..., description="Browser GPS latitude")
+    longitude: float = Field(..., description="Browser GPS longitude")
+
+
+class LocationResolveResponse(BaseModel):
+    status: str
+    city: str
+    district: str | None = None
+    adcode: str | None = None
+    formatted_address: str | None = None
+    location: str | None = None
+    weather: dict[str, Any] = Field(default_factory=dict)
+    message: str | None = None
+
+
+class AmapJsConfigResponse(BaseModel):
+    enabled: bool
+    js_api_key: str = ""
+    security_js_code: str = ""

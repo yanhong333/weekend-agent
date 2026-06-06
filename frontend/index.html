@@ -4,141 +4,165 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WeekendPilot 本地活动规划 Agent</title>
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./style.css?v=amap-20260606-1" />
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
-    <main class="app">
-      <section class="planner-shell">
-        <div class="intro">
-          <div>
-            <p class="eyebrow">WeekendPilot</p>
-            <h1>本地活动规划 Agent</h1>
-            <p class="intro-copy">
-              输入一句自然语言需求，系统会解析偏好、搜索真实地点，并生成可执行的半日活动方案。
-            </p>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="功能导航">
+        <div class="wp-mark">WP</div>
+        <button class="nav-item active" title="智能规划"><i data-lucide="bot"></i><span>智能规划</span></button>
+        <button class="nav-item" title="灵感发现"><i data-lucide="sparkles"></i><span>灵感发现</span></button>
+        <button class="nav-item" title="收藏夹"><i data-lucide="heart"></i><span>收藏夹</span></button>
+        <button class="nav-item" title="历史行程"><i data-lucide="clock"></i><span>历史行程</span></button>
+        <button class="nav-item" title="设置"><i data-lucide="settings"></i><span>设置</span></button>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div class="brand">
+            <div class="wp-mark small">WP</div>
+            <h1>WeekendPilot 本地活动规划 Agent</h1>
+            <span class="beta">BETA</span>
           </div>
-          <div class="service-status">
-            <span id="apiStatus">后端 8848</span>
+          <div class="top-meta">
+            <span id="currentCity" title="正在请求浏览器定位权限"><i data-lucide="map-pin"></i>定位中</span>
+            <span id="currentWeather" title="定位成功后显示当地天气"><i data-lucide="cloud-sun"></i>天气加载中</span>
+            <span class="avatar"></span>
+            <span>小明一家</span>
           </div>
+        </header>
+
+        <div id="errorBanner" class="error-banner" hidden>
+          <i data-lucide="circle-alert"></i>
+          <span>规划失败，请检查后端服务是否已启动，或稍后再试。</span>
         </div>
 
-        <form id="planForm" class="plan-form">
-          <div class="field">
-            <label for="userInput">你的需求</label>
-            <textarea
-              id="userInput"
-              name="userInput"
-              rows="4"
-              placeholder="例如：今天下午想带老婆和5岁孩子出去玩，别太远，老婆最近在减肥"
-              required
-            ></textarea>
-          </div>
-
-          <div class="field-row">
-            <div class="field">
-              <label for="startLocation">出发位置</label>
-              <input
-                id="startLocation"
-                name="startLocation"
-                type="text"
-                placeholder="例如：上海市徐汇区"
-                required
-              />
+        <section class="dashboard">
+          <section class="chat-panel glass-panel">
+            <div class="panel-title agent-title">
+              <div class="bot-face"></div>
+              <div>
+                <strong>WeekendPilot AI</strong>
+                <span>本地生活规划助手</span>
+              </div>
             </div>
 
-            <div class="actions">
-              <button type="button" id="demoBtn" class="secondary-btn">填入示例</button>
-              <button type="submit" id="submitBtn">生成方案</button>
+            <div class="chat-scroll">
+              <div class="chat-stream" id="chatStream">
+                <div class="message ai fade-in">
+                  <p>你好！我是你的本地活动规划助手。告诉我你的想法，我来帮你规划完美行程！</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </form>
-      </section>
 
-      <section class="summary-strip" id="summaryStrip">
-        <div>
-          <span class="summary-label">意图解析</span>
-          <strong id="parseSource">等待输入</strong>
-        </div>
-        <div>
-          <span class="summary-label">地图搜索</span>
-          <strong id="mapSource">等待搜索</strong>
-        </div>
-        <div>
-          <span class="summary-label">推荐方案</span>
-          <strong id="planCount">0 个方案</strong>
-        </div>
-      </section>
+            <div class="quick-prompts" aria-label="示例需求">
+              <button type="button" data-example="family">亲子半日游</button>
+              <button type="button" data-example="friends">朋友聚会</button>
+              <button type="button" data-example="date">情侣约会</button>
+              <button type="button" data-example="rain">雨天室内</button>
+              <button type="button" data-example="budget">预算友好</button>
+            </div>
 
-      <section class="result-layout">
-        <section class="panel">
-          <div class="section-head">
-            <div>
-              <p class="section-kicker">Agent Flow</p>
-              <h2>执行流程</h2>
+            <form id="planForm" class="chat-form">
+              <textarea id="userInput" rows="3" placeholder="继续补充更多需求..." required></textarea>
+              <div class="input-row">
+                <input id="startLocation" type="text" placeholder="出发地：上海市徐汇区" required />
+                <button type="button" id="demoBtn" class="ghost-btn">示例</button>
+                <button type="submit" id="submitBtn"><i data-lucide="send"></i>开始规划</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="analysis-panel glass-panel">
+            <div class="panel-head">
+              <div>
+                <p class="kicker"><i data-lucide="sparkles"></i>DeepSeek</p>
+                <h2>结构化需求分析</h2>
+              </div>
+              <strong id="parseSource">等待输入</strong>
             </div>
-          </div>
-          <div id="flowResult" class="flow-grid">
-            <div class="flow-step pending">
-              <span>1</span>
-              <strong>理解需求</strong>
-              <p>等待调用 DeepSeek</p>
+            <div id="intentResult" class="analysis-grid empty-state">
+              提交后展示时间、人群、预算、距离、饮食限制和活动偏好。
             </div>
-            <div class="flow-step pending">
-              <span>2</span>
-              <strong>搜索地点</strong>
-              <p>等待调用高德地图</p>
+            <div class="insight-card" id="agentNote">
+              <i data-lucide="sparkles"></i>
+              <p>AI 洞察会在规划完成后显示。</p>
             </div>
-            <div class="flow-step pending">
-              <span>3</span>
-              <strong>规划排序</strong>
-              <p>等待 Planner 打分</p>
-            </div>
-          </div>
+          </section>
+
+          <aside class="plan-panel">
+            <section class="best-plan glass-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="kicker"><i data-lucide="route"></i>Planner</p>
+                  <h2>最佳推荐行程</h2>
+                </div>
+                <strong id="recommendScore">推荐指数 --</strong>
+              </div>
+              <div id="bestPlanResult" class="timeline empty-state">暂无推荐方案</div>
+            </section>
+
+            <section class="alternatives glass-panel">
+              <div class="panel-head compact">
+                <div>
+                  <p class="kicker"><i data-lucide="compass"></i>Options</p>
+                  <h2>更多备选方案</h2>
+                </div>
+                <strong id="planCount">0 个方案</strong>
+              </div>
+              <div id="alternativePlans" class="alt-grid empty-state">暂无备选方案</div>
+            </section>
+          </aside>
         </section>
 
-        <section class="panel">
-          <div class="section-head">
-            <div>
-              <p class="section-kicker">DeepSeek</p>
-              <h2>意图解析</h2>
+        <section class="detail-grid">
+          <section class="route-card glass-panel">
+            <div class="panel-head compact">
+              <div>
+                <p class="kicker"><i data-lucide="map"></i>Route</p>
+                <h2 id="routeTitle">方案一 · 路线概览</h2>
+              </div>
+              <strong id="mapSource">等待搜索</strong>
             </div>
-          </div>
-          <div id="intentResult" class="empty-state">
-            提交后会展示时间、人数、预算、距离、饮食限制和关键词。
-          </div>
-        </section>
+            <div class="route-body">
+              <div class="map-preview">
+                <div id="amapContainer" class="amap-container" hidden></div>
+                <img id="staticMapPreview" src="./assets/static-map-teal.svg" alt="静态路线地图预览" />
+                <div id="mapApiNotice" class="map-api-notice">高德 JS API 未配置，当前显示静态路线预览</div>
+                <div class="map-legend">
+                  <span><b>1</b>起点</span>
+                  <span><b>2</b>活动</span>
+                  <span><b>3</b>餐厅</span>
+                  <span><b>4</b>返程</span>
+                </div>
+              </div>
+              <div id="routeStats" class="route-stats">
+                <span><i data-lucide="route"></i>总里程 --</span>
+                <span><i data-lucide="clock"></i>预计时长 --</span>
+                <span><i data-lucide="map-pin"></i>打卡地点 --</span>
+                <span><i data-lucide="leaf"></i>适合季节 春、夏、秋</span>
+              </div>
+            </div>
+          </section>
 
-        <section class="panel">
-          <div class="section-head">
-            <div>
-              <p class="section-kicker">AMap</p>
-              <h2>候选地点</h2>
+          <section class="score-panel glass-panel">
+            <div class="panel-head compact">
+              <div>
+                <p class="kicker"><i data-lucide="star"></i>Score</p>
+                <h2>智能评分对比</h2>
+              </div>
+              <div class="help-tip">
+                <i data-lucide="help-circle"></i>
+                <span>评分综合考虑距离、预算、场景匹配、饮食限制和路线合理性。</span>
+              </div>
             </div>
-          </div>
-          <div class="candidate-grid">
-            <div>
-              <h3>活动地点</h3>
-              <div id="activityList" class="list empty-state">暂无数据</div>
-            </div>
-            <div>
-              <h3>餐厅</h3>
-              <div id="restaurantList" class="list empty-state">暂无数据</div>
-            </div>
-          </div>
+            <div id="scoreCompare" class="score-compare empty-state">暂无评分</div>
+          </section>
         </section>
+      </main>
+    </div>
 
-        <section class="panel">
-          <div class="section-head">
-            <div>
-              <p class="section-kicker">Planner</p>
-              <h2>推荐方案</h2>
-            </div>
-          </div>
-          <div id="plansResult" class="plans empty-state">暂无方案</div>
-        </section>
-      </section>
-    </main>
-
-    <script src="./app.js"></script>
+    <script src="./app.js?v=amap-20260606-1"></script>
   </body>
 </html>
